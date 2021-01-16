@@ -22,8 +22,8 @@ const sidebarData = [
 	}
 ];
 
-const sidebarCategories = sidebarData.map((category) =>
-	<SidebarCategory category={category}/>
+const sidebarCategories = sidebarData.map((category:any, index: number) =>
+	<SidebarCategory category={category} key={index}/>
 );
 
 class Sidebar extends Component {

@@ -116,8 +116,8 @@ const compareValues = (identifier:string) => {
 }
 
 const listItems = (listingType: ListingTypes, listings: Listing[]): ReactNode => {
-	return listings.map((listing) => {
-		return listingType === ListingTypes.column ? <ListingPartialVertical listing={listing}/> :  <ListingPartial listing={listing}/>
+	return listings.map((listing: Listing, index: number) => {
+		return listingType === ListingTypes.column ? <ListingPartialVertical listing={listing} key={index}/> :  <ListingPartial listing={listing} key={index}/>
 	})
 };
 

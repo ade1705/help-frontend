@@ -1,19 +1,23 @@
 import React, {Component} from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faChevronDown, faChevronUp} from "@fortawesome/free-solid-svg-icons";
+import {connect} from "react-redux";
+import {selectCategory} from "../../store/category/actions";
+import {Category} from "../../store/category/types";
 
 interface Props {
-	category: any
+	category: any,
+	selectCategory: any
 }
 
 interface State {
 	showAccordion: boolean;
 }
 
-const categoryOptions = (options:string[]) => {
-	return options.map((option:string) =>
-		<div className="font-semibold block py-1">
-			<input className="mr-3 leading-tight" type="checkbox"/>
+const categoryOptions = (options:string[], callback: any) => {
+	return options.map((option:string, index:number) =>
+		<div className="font-semibold block py-1" key={index}>
+			<input className="mr-3 leading-tight" type="checkbox" onClick={() => callback(option)}/>
 			<span className="">{option}</span>
 		</div>
 	);
@@ -26,6 +30,9 @@ class SidebarCategory extends Component<Props, State> {
 
 	showAccordion = () => this.setState({ showAccordion: !this.state.showAccordion });
 
+	callBack = () => {
+		console.log('callback')
+	}
 	render() {
 		return <div className="p-6 bg-gray-200 rounded mb-4">
 			<div className="flex justify-between mb-5" role="button" onClick={this.showAccordion}>
@@ -35,11 +42,23 @@ class SidebarCategory extends Component<Props, State> {
 			</div>
 			{this.state.showAccordion &&
 	      <div>
-		      {categoryOptions(this.props.category.options)}
+		      {categoryOptions(this.props.category.options, this.props.selectCategory)}
 	      </div>
 			}
 		</div>;
 	}
 }
 
-export default SidebarCategory;
+const mapDispatchToProps = (
+	dispatch: any
+) => {
+	return {
+		selectCategory: (category: Category) =>
+			dispatch(selectCategory(category)),
+	};
+};
+
+export default connect(
+	null,
+	mapDispatchToProps
+)(SidebarCategory);
