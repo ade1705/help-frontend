@@ -7,9 +7,7 @@ const sidebarData = [
 	{
 		name: "Categories",
 		options: [
-			"Current",
-			"Bla Bla",
-			"sambali Sambbali"
+			'Handy Man', 'House Cleaning', 'Massage Therapy', 'Personal Training', 'Dog Walking'
 		]
 	},
 	{

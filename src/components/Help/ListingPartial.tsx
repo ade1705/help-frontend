@@ -36,7 +36,7 @@ class ListingPartial extends Component<Props> {
 				<div className="w-2/12">
 								<span className="py-2 pr-4  pl-2 bg-red-300 rounded-full lowercase font-semibold">
 									<div className="rounded-full h-4 w-4 flex items-center justify-center inline-flex bg-red-700 mr-2">&nbsp;</div>
-									Design
+									{this.props.listing.category}
 								</span>
 				</div>
 				<div className="w-1/12 text-right">

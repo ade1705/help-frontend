@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faChevronDown, faListOl, faThLarge} from "@fortawesome/free-solid-svg-icons";
 import Faker from 'faker';
 import {Listing} from "./ListingInterface";
+import {Category} from "../../store/category/types";
+import {connect} from "react-redux";
 
 const listings = [
 	{
@@ -63,11 +65,13 @@ const listings = [
 	},
 ];
 
-interface Props {}
+interface Props {
+	selectedCategories: string[]
+}
 enum ListingTypes {list = "list", column = "column"}
 interface IState {
 	viewType: ListingTypes;
-	listings: Listing[]
+	listings: Listing[];
 }
 
 interface ISortType {
@@ -130,8 +134,24 @@ class Listings extends Component<Props, IState> {
 	changeViewType = (newViewType: ListingTypes):void => this.setState({ viewType: newViewType });
 	isCurrentViewType = (viewType: ListingTypes):boolean => this.state.viewType === viewType;
 	handleSort = (event: React.FormEvent<HTMLSelectElement>): void => {
-		this.setState({ listings: listings.sort(compareValues(event.currentTarget.value)) });
+		this.setState({ listings: this.state.listings.sort(compareValues(event.currentTarget.value)) });
 	}
+
+	handleFilter = (): void => {
+		let filteredListings = this.props.selectedCategories.length === 0
+			? listings
+			: listings.filter(listing => {
+				return this.props.selectedCategories.includes(listing.category)
+			});
+		this.setState({ listings: filteredListings });
+	}
+
+	componentDidUpdate(prevProps: Props) {
+		if (this.props.selectedCategories.length !== prevProps.selectedCategories.length) {
+			this.handleFilter();
+		}
+	}
+
 	render() {
 		return (
 			<div>
@@ -158,4 +178,12 @@ class Listings extends Component<Props, IState> {
 	}
 }
 
-export default Listings;
+const mapStateToProps = (state:any) => {
+	return {
+		selectedCategories: state.categoryReducer.selectedCategories
+	};
+};
+
+export default connect(
+	mapStateToProps
+)(Listings)
